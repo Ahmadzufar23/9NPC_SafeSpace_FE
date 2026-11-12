@@ -1,6 +1,32 @@
 # 9NPC_SafeSpace_FE
 A GitHub repository for SafeSpace's front-end. Made by 9NPC for KSM Android Capstone 2026.
 
+## Menjalankan dengan Docker (bersama backend)
+
+Frontend ini dijalankan sebagai service `frontend` di stack Docker Compose repo backend
+([Ahmadzufar23/9NPC_SafeSpace_BE](https://github.com/Ahmadzufar23/9NPC_SafeSpace_BE)), di belakang
+gateway nginx. Browser membuka `http://localhost:8080`: path `/` dilayani frontend ini, `/api/` diteruskan ke backend.
+
+- [Dockerfile](Dockerfile): build Vite (`npm run build`) lalu sajikan `dist/` dengan nginx.
+- [nginx.conf](nginx.conf): server statis + fallback SPA (`try_files ... /index.html`) dan cache aset.
+- Variabel build (`VITE_*`, lihat [.env.example](.env.example)):
+  - `VITE_API_BASE_URL` — `/api` saat lewat gateway; jika kosong memakai backend Vercel.
+  - `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY` — dari project Supabase.
+
+Build manual tanpa Compose:
+
+```bash
+docker build -t safespace-frontend --build-arg VITE_API_BASE_URL=/api .
+```
+
+## Menjalankan tanpa Docker
+
+```bash
+cp .env.example .env   # isi nilai Supabase
+npm install
+npm run dev
+```
+
 ## Template
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

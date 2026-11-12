@@ -2,7 +2,8 @@ import axios from "axios";
 
 // Instance umum
 export const api = axios.create({
-    baseURL: "https://safespacebackend.vercel.app/api",
+    // Di Docker (lewat gateway nginx) diisi "/api"; tanpa env tetap ke backend Vercel.
+    baseURL: import.meta.env.VITE_API_BASE_URL || "https://safespacebackend.vercel.app/api",
     withCredentials: true
 });
 
